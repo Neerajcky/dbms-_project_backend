@@ -1,0 +1,11 @@
+create table
+  public.songs (
+    id character varying not null,
+    song_name character varying not null,
+    duration time without time zone not null,
+    artist_id character varying not null,
+    genre_id character varying not null,
+    release_date date null,
+    no_of_times_played numeric null,
+    constraint songs_pkey primary key (id)
+) tablespace pg_default;
