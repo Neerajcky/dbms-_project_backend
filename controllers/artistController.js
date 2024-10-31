@@ -12,25 +12,24 @@ export const getArtists = async (req, res) => {
 };
 
 export const getArtistById = async (req, res) => {
-    const artistId = parseInt(req.params.id, 10); // Ensure artistId is an integer
-  
-    if (isNaN(artistId)) {
-      return res.status(400).json({ message: 'Invalid artist ID' }); // Handle invalid ID
+  const artistId = parseInt(req.params.id, 10); // Ensure artistId is an integer
+
+  if (isNaN(artistId)) {
+    return res.status(400).json({ message: 'Invalid artist ID' }); // Handle invalid ID
+  }
+
+  try {
+    const artist = await Artist.getById(artistId); // Fetch artist by ID
+    if (artist) {
+      res.status(200).json(artist); // Send the artist data as a response
+    } else {
+      res.status(404).json({ message: 'Artist not found' }); // Artist not found
     }
-  
-    try {
-      const artist = await Artist.getById(artistId); // Fetch artist by ID
-      if (artist) {
-        res.status(200).json(artist); // Send the artist data as a response
-      } else {
-        res.status(404).json({ message: 'Artist not found' }); // Artist not found
-      }
-    } catch (error) {
-      console.error('Error retrieving artist:', error); // Log error for debugging
-      res.status(500).json({ message: 'Server error' }); // Handle server error
-    }
-  };
-  
+  } catch (error) {
+    console.error('Error retrieving artist:', error); // Log error for debugging
+    res.status(500).json({ message: 'Server error' }); // Handle server error
+  }
+};
 
 // Add a new artist
 export const addArtist = async (req, res) => {
@@ -56,14 +55,14 @@ export const deleteArtist = async (req, res) => {
     }
   } catch (error) {
     console.error('Error deleting artist:', error);
-    res.status(500).json({ error: 'Failed to delete artist' }); // Handle errors
+    res.status(500).json({ error: 'Failed to delete artist' }); 
   }
 };
 
 // Update artist by ID
 export const updateArtist = async (req, res) => {
   const { id } = req.params; // Extract artist ID from request parameters
-  const { art_name, genre, dob, country, albums_released } = req.body; // Destructure request body
+  const { art_name, genre, dob, country, albums_released } = req.body; 
   try {
     const updatedArtist = await Artist.updateById(id, art_name, genre, dob, country, albums_released); // Update artist
     if (updatedArtist) {
