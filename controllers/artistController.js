@@ -44,20 +44,25 @@ export const addArtist = async (req, res) => {
 };
 
 // Delete artist by ID
+// Inside artistController.js
 export const deleteArtist = async (req, res) => {
-  const { id } = req.params; // Extract artist ID from request parameters
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ error: 'Invalid artist ID' });
+  }
   try {
-    const deletedArtist = await Artist.deleteById(id); // Delete artist by ID
+    const deletedArtist = await Artist.deleteById(id);
     if (deletedArtist) {
-      res.status(200).json({ message: 'Artist deleted successfully', deletedArtist }); // Success response
+      res.status(200).json({ message: 'Artist deleted successfully', deletedArtist });
     } else {
-      res.status(404).json({ error: 'Artist not found' }); // Artist not found
+      res.status(404).json({ error: 'Artist not found' });
     }
   } catch (error) {
     console.error('Error deleting artist:', error);
-    res.status(500).json({ error: 'Failed to delete artist' }); 
+    res.status(500).json({ error: 'Failed to delete artist' });
   }
 };
+
 
 // Update artist by ID
 export const updateArtist = async (req, res) => {
