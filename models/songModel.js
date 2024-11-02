@@ -11,12 +11,12 @@ const Song = {
   // Create a new song
   create: async ({ id, song_name, duration, artist_id, genre_id, release_date, no_of_times_played }) => {
     const sql = `
-      INSERT INTO songs (id, song_name, duration, artist_id, genre_id, release_date, no_of_times_played)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO songs ( song_name, duration, artist_id, genre_id, release_date, no_of_times_played)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
 
-    const { rows } = await query(sql, [id, song_name, duration, artist_id, genre_id, release_date, no_of_times_played]);
+    const { rows } = await query(sql, [song_name, duration, artist_id, genre_id, release_date, no_of_times_played]);
     return rows[0];
   },
 
